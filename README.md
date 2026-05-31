@@ -1,6 +1,6 @@
-# Demo web API on FastAPI with Swagger
+# Order management API
 
-### My first demo project on FastAPI with Swagger
+### Demo project on FastAPI
 
 - asynchronous
 - SQLAlchemy
@@ -76,7 +76,7 @@ nginx
 
 ### Demonstration
 
-You can go to the [documentation page](https://demo-web-api-on-fastapi-with-swagger.stepan-0x28.com/docs) to test the
+You can go to the [documentation page](https://order-management-api.stepan-0x28.com/docs) to test the
 methods
 
 Test users for authorization:
