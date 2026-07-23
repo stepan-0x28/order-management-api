@@ -1,5 +1,5 @@
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Callable, Awaitable
 
 from app.core.database.exceptions import convert_integrity_error

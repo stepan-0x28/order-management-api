@@ -1,6 +1,6 @@
 from enum import StrEnum
 
 
-class Roles(StrEnum):
+class Role(StrEnum):
     CUSTOMER = 'customer'
     EXECUTOR = 'executor'

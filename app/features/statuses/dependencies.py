@@ -1,5 +1,5 @@
 from fastapi import Depends
-from sqlalchemy.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 
 from app.core.dependencies import get_session

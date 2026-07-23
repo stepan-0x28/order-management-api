@@ -1,5 +1,5 @@
 from typing import Sequence
-from sqlalchemy.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.features.statuses.repository import StatusRepository
 from app.features.statuses.model import Status

@@ -3,7 +3,7 @@ from datetime import datetime, UTC, timedelta
 from jose import jwt
 # noinspection PyPackageRequirements
 from jose.exceptions import JWTError
-from sqlalchemy.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.settings import settings
 

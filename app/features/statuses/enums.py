@@ -1,5 +1,5 @@
 from enum import StrEnum
 
 
-class Statuses(StrEnum):
+class Status(StrEnum):
     NEW = 'new'

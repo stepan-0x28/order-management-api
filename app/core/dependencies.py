@@ -1,5 +1,5 @@
 from typing import AsyncGenerator
-from sqlalchemy.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Form
 from pydantic import BaseModel
 from inspect import Signature, Parameter

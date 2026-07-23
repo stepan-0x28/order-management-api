@@ -1,5 +1,5 @@
 from sqlalchemy import Select, Result, Executable
-from sqlalchemy.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Sequence, Any
 
 from app.core.base.model import BaseModel

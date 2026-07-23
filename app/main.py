@@ -15,7 +15,7 @@ from app.features.orders.router import router as orders
 from app.features.executors.router import router as executors
 
 
-async def exception_handler(_, exc: BaseError) -> JSONResponse:
+def exception_handler(_, exc: BaseError) -> JSONResponse:
     return JSONResponse(status_code=exc.status_code, content={'detail': exc.detail})
 
 

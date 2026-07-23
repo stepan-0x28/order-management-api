@@ -1,7 +1,7 @@
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
-from sqlalchemy.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.dependencies import get_session
 
