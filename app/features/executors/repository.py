@@ -1,5 +1,5 @@
-from sqlalchemy import select, Sequence, Select
-from typing import Optional
+from sqlalchemy import select, Select
+from typing import Optional, Sequence
 
 from app.core.base.repository import BaseRepository
 

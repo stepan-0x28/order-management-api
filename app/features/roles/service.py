@@ -1,4 +1,4 @@
-from sqlalchemy import Sequence
+from typing import Sequence
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from app.features.roles.repository import RoleRepository
