@@ -4,14 +4,14 @@ from typing import Optional, Sequence
 from app.core.base.repository import BaseRepository
 
 from app.features.roles.enums import Role as RoleEnum
-from app.features.roles.model import Role
+from app.features.roles.model import Role as RoleModel
 from app.features.users.model import User
 
 
 class ExecutorRepository(BaseRepository):
     @staticmethod
     def __build_executors_select() -> Select:
-        return select(User).join(User.role).where(Role.key == RoleEnum.EXECUTOR)
+        return select(User).join(User.role).where(RoleModel.key == RoleEnum.EXECUTOR)
 
     async def get_all(self) -> Sequence[User]:
         return await self._get_all(self.__build_executors_select())

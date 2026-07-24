@@ -1,5 +1,5 @@
 from pydantic import BaseModel
 
 
-class IDResponse(BaseModel):
+class ID(BaseModel):
     id: int
