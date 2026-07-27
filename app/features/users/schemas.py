@@ -12,7 +12,7 @@ class UserIn(UserPersonal):
     role_id: int
 
 
-class UserOut(UserPersonal):
+class User(UserPersonal):
     id: int
     username: str
     role_id: int

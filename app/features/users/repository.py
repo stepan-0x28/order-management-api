@@ -17,7 +17,7 @@ class UserRepository(BaseRepository):
     async def get_by_username(self, username: str) -> Optional[User]:
         return await self._get_one(select(User).where(User.username == username))
 
-    async def update_data(self, user_id: int, first_name: str, last_name: str):
+    async def update_personal(self, user_id: int, first_name: str, last_name: str):
         await self.execute(self.__build_user_update(user_id).values(first_name=first_name, last_name=last_name))
 
     async def update_username(self, user_id: int, username: str):

@@ -51,8 +51,8 @@ class UserService(BaseService):
 
         return user_id
 
-    async def change_data(self, user: User, user_personal: UserPersonal):
-        await self.__user_repository.update_data(user.id, user_personal.first_name, user_personal.last_name)
+    async def update_personal(self, user: User, user_personal: UserPersonal):
+        await self.__user_repository.update_personal(user.id, user_personal.first_name, user_personal.last_name)
 
         await self.commit()
 

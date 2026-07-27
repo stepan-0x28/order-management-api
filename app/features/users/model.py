@@ -19,3 +19,8 @@ class User(BaseModel):
     token_version: Mapped[int] = mapped_column(Integer, nullable=False, server_default=text('0'))
 
     role: Mapped[Role] = relationship(Role)
+
+    async def has_role(self, role_key: str) -> bool:
+        role = await self.awaitable_attrs.role
+
+        return role.key == role_key
