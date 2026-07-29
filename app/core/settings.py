@@ -3,7 +3,6 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     database_host: str
-    database_port: int
     database_name: str
     database_username: str
     database_password: str
@@ -12,7 +11,7 @@ class Settings(BaseSettings):
     def database_url(self) -> str:
         return (
             f'postgresql+asyncpg://{self.database_username}:{self.database_password}'
-            f'@{self.database_host}:{self.database_port}/{self.database_name}'
+            f'@{self.database_host}/{self.database_name}'
         )
 
     database_pool_pre_ping: bool

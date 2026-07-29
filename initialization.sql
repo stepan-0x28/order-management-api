@@ -17,12 +17,13 @@ CREATE TABLE statuses (
 );
 
 CREATE TABLE users (
-    id         serial4 NOT NULL,
-    username   varchar NOT NULL,
-    password   varchar NOT NULL,
-    role_id    int4    NOT NULL,
-    first_name varchar NOT NULL,
-    last_name  varchar NOT NULL,
+    id            serial4 NOT NULL,
+    username      varchar NOT NULL,
+    password_hash varchar NOT NULL,
+    role_id       int4    NOT NULL,
+    first_name    varchar NOT NULL,
+    last_name     varchar NOT NULL,
+    token_version int4    NOT NULL DEFAULT 0,
     CONSTRAINT users_pk PRIMARY KEY (id),
     CONSTRAINT users_un UNIQUE (username),
     CONSTRAINT users_fk FOREIGN KEY (role_id) REFERENCES roles (id)
@@ -52,12 +53,12 @@ VALUES ('new', 'New', 'The customer created an order'),
        ('in_progress', 'In progress', 'The customer began work on the order'),
        ('completed', 'Completed', 'The customer has completed work on the order');
 
-INSERT INTO users (username, password, role_id, first_name, last_name)
-VALUES ('kevin645', 'kevin645pass', 2, 'Kevin', 'Morgan'),
-       ('james4214', 'james4214pass', 2, 'James', 'Anderson'),
-       ('fred4444', 'fred4444pass', 1, 'Fred', 'Russell'),
-       ('thomas9213', 'thomas9213pass', 1, 'Thomas', 'Sparks'),
-       ('josh8882', 'josh8882pass', 1, 'Josh', 'Torres');
+INSERT INTO users (username, password_hash, role_id, first_name, last_name)
+VALUES ('kevin645', '$2b$12$oe.QScdZT.gl7FRBlN.dFuKX/5CcphY/8H9iFozmyOuxw9v34aBym', 2, 'Kevin', 'Morgan'),
+       ('james4214', '$2b$12$Xs6IeJjkTmeRfzVn4STQYeR/Lv.b5sio0YX3qsFUGFS8SuwCM2Dqm', 2, 'James', 'Anderson'),
+       ('fred4444', '$2b$12$dqFBFoot77orFZnrkg6CSu7bdhibxDE0qd7ec.jMFWI7eI630SjfW', 1, 'Fred', 'Russell'),
+       ('thomas9213', '$2b$12$Eq6TS2JM1LOffxFt8CRWeuOdvzsSOryhkn5wC1n1Gsh67u7gLniXi', 1, 'Thomas', 'Sparks'),
+       ('josh8882', '$2b$12$2duWctz3POIYxgzhOE8NruYtsMnmVmYEaWz2mmDmHkTNMBJ4yOkRO', 1, 'Josh', 'Torres');
 
 INSERT INTO orders(customer_id, executor_id, name, description, status_id)
 VALUES (3, 1, 'Website', 'Create a website using the Django framework for an insurance company', 1),

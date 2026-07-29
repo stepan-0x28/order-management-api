@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:18.4-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - ./initialization.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+  api:
+    build: .
+    image: order-management-api
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "${UVICORN_PORT}:${UVICORN_PORT}"
+    depends_on:
+      - db
