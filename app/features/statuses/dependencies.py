@@ -1,11 +1,16 @@
 from fastapi import Depends
-from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 
-from app.core.dependencies import get_session
+from app.core.dependencies import get_db_session
+from app.core.database.session import SessionWrapper
 
+from app.features.statuses.repository import StatusRepository
 from app.features.statuses.service import StatusService
 
 
-def get_status_service(session: Annotated[AsyncSession, Depends(get_session)]) -> StatusService:
-    return StatusService(session)
+def get_status_repository(session: Annotated[SessionWrapper, Depends(get_db_session)]) -> StatusRepository:
+    return StatusRepository(session)
+
+
+def get_status_service(status_repository: Annotated[StatusRepository, Depends(get_status_repository)]) -> StatusService:
+    return StatusService(status_repository)
