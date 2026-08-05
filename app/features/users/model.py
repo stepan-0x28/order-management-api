@@ -7,7 +7,6 @@ from app.features.roles.model import Role
 
 
 class User(BaseModel):
-    # noinspection SpellCheckingInspection
     __tablename__ = 'users'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -20,7 +19,7 @@ class User(BaseModel):
 
     role: Mapped[Role] = relationship(Role)
 
-    async def has_role(self, role_key: str) -> bool:
+    async def is_role(self, role_key: str) -> bool:
         role = await self.awaitable_attrs.role
 
         return role.key == role_key

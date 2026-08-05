@@ -31,7 +31,7 @@ def read_current_user(current_user: Annotated[UserModel, Depends(get_current_use
 async def update_current_user(current_user: Annotated[UserModel, Depends(get_current_user)],
                               user_personal: Annotated[UserPersonal, Depends(FormMaker(UserPersonal))],
                               user_service: Annotated[UserService, Depends(get_user_service)]):
-    await user_service.update_personal(current_user, user_personal)
+    await user_service.update_personal_data(current_user, user_personal)
 
 
 @router.post('/me/username')

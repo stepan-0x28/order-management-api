@@ -1,7 +1,5 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from app.core.base.service import BaseService
-from app.core.database.exceptions import UniqueViolationError, ForeignKeyViolationError
+from app.core.database.exceptions import UniqueViolationError
+from app.core.database.session import SessionWrapper
 
 from app.security.passwords import hash_password, check_password
 from app.security.auth.exceptions import IncorrectPasswordError
@@ -14,12 +12,12 @@ from app.features.roles.exceptions import NonExistentRoleError
 from app.features.roles.repository import RoleRepository
 
 
-class UserService(BaseService):
-    def __init__(self, session: AsyncSession):
-        super().__init__(session)
+class UserService:
+    def __init__(self, user_repository: UserRepository, role_repository: RoleRepository, session: SessionWrapper):
+        self.__user_repository = user_repository
+        self.__role_repository = role_repository
 
-        self.__user_repository = UserRepository(session)
-        self.__role_repository = RoleRepository(session)
+        self.__session = session
 
     async def create(self, user_in: UserIn) -> int:
         if await self.__role_repository.get_by_id(user_in.role_id) is None:
@@ -36,25 +34,21 @@ class UserService(BaseService):
             last_name=user_in.last_name
         )
 
-        self.__user_repository.add(user)
+        self.__session.add(user)
 
         try:
-            await self.flush()
+            await self.__session.commit()
+        except UniqueViolationError as err:
+            if err.column == User.username:
+                raise TakenUsernameError
 
-            user_id = user.id
+        return user.id
 
-            await self.commit()
-        except ForeignKeyViolationError:
-            raise NonExistentRoleError
-        except UniqueViolationError:
-            raise TakenUsernameError
+    async def update_personal_data(self, user: User, user_personal: UserPersonal):
+        user.first_name = user_personal.first_name
+        user.last_name = user_personal.last_name
 
-        return user_id
-
-    async def update_personal(self, user: User, user_personal: UserPersonal):
-        await self.__user_repository.update_personal(user.id, user_personal.first_name, user_personal.last_name)
-
-        await self.commit()
+        await self.__session.commit()
 
     async def change_username(self, user: User, username: str):
         if username == user.username:
@@ -63,12 +57,13 @@ class UserService(BaseService):
         if await self.__user_repository.get_by_username(username) is not None:
             raise TakenUsernameError
 
-        await self.__user_repository.update_username(user.id, username)
+        user.username = username
 
         try:
-            await self.commit()
-        except UniqueViolationError:
-            raise TakenUsernameError
+            await self.__session.commit()
+        except UniqueViolationError as err:
+            if err.column == User.username:
+                raise TakenUsernameError
 
     async def change_password(self, user: User, current_password: str, new_password: str):
         if current_password == new_password:
@@ -77,8 +72,7 @@ class UserService(BaseService):
         if not await check_password(current_password, user.password_hash):
             raise IncorrectPasswordError
 
-        await self.__user_repository.update_password_hash(user.id, await hash_password(new_password))
+        user.password_hash = await hash_password(new_password)
+        user.token_version += 1
 
-        await self.__user_repository.increase_token_version(user.id)
-
-        await self.commit()
+        await self.__session.commit()
