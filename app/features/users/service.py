@@ -66,11 +66,11 @@ class UserService:
                 raise TakenUsernameError
 
     async def change_password(self, user: User, current_password: str, new_password: str):
-        if current_password == new_password:
-            raise SamePasswordError
-
         if not await check_password(current_password, user.password_hash):
             raise IncorrectPasswordError
+
+        if current_password == new_password:
+            raise SamePasswordError
 
         user.password_hash = await hash_password(new_password)
         user.token_version += 1
