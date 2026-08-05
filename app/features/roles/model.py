@@ -5,7 +5,6 @@ from app.core.base.model import BaseModel
 
 
 class Role(BaseModel):
-    # noinspection SpellCheckingInspection
     __tablename__ = 'roles'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
