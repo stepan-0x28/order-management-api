@@ -10,4 +10,4 @@ async_engine = create_async_engine(
     max_overflow=settings.database_max_overflow
 )
 
-async_session_maker = async_sessionmaker(async_engine)
+async_session_maker = async_sessionmaker(async_engine, expire_on_commit=False)

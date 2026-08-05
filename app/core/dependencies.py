@@ -1,15 +1,15 @@
 from typing import AsyncGenerator
-from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Form
 from pydantic import BaseModel
 from inspect import Signature, Parameter
 
 from app.core.database.connection import async_session_maker
+from app.core.database.session import SessionWrapper
 
 
-async def get_session() -> AsyncGenerator[AsyncSession, None]:
+async def get_db_session() -> AsyncGenerator[SessionWrapper, None]:
     async with async_session_maker() as session:
-        yield session
+        yield SessionWrapper(session)
 
 
 class FormMaker:

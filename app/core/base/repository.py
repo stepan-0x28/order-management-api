@@ -1,22 +1,15 @@
-from sqlalchemy import Select, Result, Executable
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import Select
 from typing import Sequence, Any
 
-from app.core.base.model import BaseModel
+from app.core.database.session import SessionWrapper
 
 
 class BaseRepository:
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: SessionWrapper):
         self.__session = session
 
     async def _get_all(self, statement: Select) -> Sequence:
-        return (await self.execute(statement)).scalars().all()
+        return (await self.__session.execute(statement)).scalars().all()
 
     async def _get_one(self, statement: Select) -> Any:
-        return (await self.execute(statement)).scalar_one_or_none()
-
-    def add(self, model: BaseModel):
-        self.__session.add(model)
-
-    async def execute(self, statement: Executable) -> Result:
-        return await self.__session.execute(statement)
+        return (await self.__session.execute(statement)).scalar_one_or_none()
