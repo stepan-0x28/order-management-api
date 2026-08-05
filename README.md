@@ -31,7 +31,7 @@ services:
       - "5432:5432"
 ```
 
-Then just run Docker Compose
+Then just run it using Docker Compose
 
 ```bash
 docker compose up -d
