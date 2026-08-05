@@ -14,10 +14,6 @@ _MODELS = {
 }
 
 
-class ForeignKeyViolationError(Exception):
-    pass
-
-
 class UniqueViolationError(Exception):
     def __init__(self, column):
         self.column = column
@@ -27,9 +23,7 @@ def convert_integrity_error(dialect_name: str, err: IntegrityError) -> Exception
     if dialect_name == 'postgresql':
         pg_code = getattr(err.orig, 'pgcode')
 
-        if pg_code == '23503':
-            return ForeignKeyViolationError()
-        elif pg_code == '23505':
+        if pg_code == '23505':
             err_text = str(err)
 
             table_name = err_text.split('INSERT INTO ')[1].split(' ')[0]
