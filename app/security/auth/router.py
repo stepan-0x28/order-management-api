@@ -10,8 +10,8 @@ router = APIRouter(prefix='/auth', tags=['auth'])
 
 
 @router.post('/login', response_model=Token)
-async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+async def login(credentials: Annotated[OAuth2PasswordRequestForm, Depends()],
                 auth_service: Annotated[AuthService, Depends(get_auth_service)]):
-    token = await auth_service.create_token(form_data.username, form_data.password)
+    token = await auth_service.create_token(credentials.username, credentials.password)
 
     return Token(access_token=token)

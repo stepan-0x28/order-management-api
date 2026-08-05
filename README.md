@@ -9,7 +9,6 @@ status
 - FastAPI
 - asyncio
 - SQLAlchemy
-- PostgreSQL
 - Pydantic
 - bcrypt
 - JWT
