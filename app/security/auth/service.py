@@ -1,9 +1,6 @@
-from datetime import datetime, UTC, timedelta
-# noinspection PyPackageRequirements
 from jose import jwt
-# noinspection PyPackageRequirements
 from jose.exceptions import JWTError
-from sqlalchemy.ext.asyncio import AsyncSession
+from datetime import datetime, UTC, timedelta
 
 from app.core.settings import settings
 
@@ -15,8 +12,8 @@ from app.features.users.model import User
 
 
 class AuthService:
-    def __init__(self, session: AsyncSession):
-        self.__user_repository = UserRepository(session)
+    def __init__(self, user_repository: UserRepository):
+        self.__user_repository = user_repository
 
     @staticmethod
     def __encode_token(user_id: int, token_version: int) -> str:

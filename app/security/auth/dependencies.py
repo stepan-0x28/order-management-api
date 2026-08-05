@@ -1,19 +1,18 @@
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from app.core.dependencies import get_session
 
 from app.security.auth.service import AuthService
 
 from app.features.users.model import User
+from app.features.users.dependencies import get_user_repository
+from app.features.users.repository import UserRepository
 
 _oauth2_scheme = OAuth2PasswordBearer('/auth/login')
 
 
-def get_auth_service(session: Annotated[AsyncSession, Depends(get_session)]) -> AuthService:
-    return AuthService(session)
+def get_auth_service(user_repository: Annotated[UserRepository, Depends(get_user_repository)]) -> AuthService:
+    return AuthService(user_repository)
 
 
 async def get_current_user(token: Annotated[str, Depends(_oauth2_scheme)],
