@@ -1,4 +1,4 @@
-from sqlalchemy import select, update, false, Update
+from sqlalchemy import select, false, Select
 from sqlalchemy.sql import operators
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from typing import Sequence, Optional
@@ -10,50 +10,34 @@ from app.features.orders.model import Order
 
 class OrderRepository(BaseRepository):
     @staticmethod
-    def __build_order_update(order_id: int) -> Update:
-        return update(Order).where(Order.id == order_id)
+    def __build_base_orders_select(user_column: InstrumentedAttribute, user_id: int) -> Select:
+        return select(Order).where(operators.eq(user_column, user_id))
 
-    async def __get_orders(self,
-                           user_column: InstrumentedAttribute,
-                           user_id: int,
-                           include_deleted: bool) -> Sequence[Order]:
-        statement = select(Order).where(operators.eq(user_column, user_id))
+    def __build_orders_select(self, user_column: InstrumentedAttribute, user_id: int, include_deleted: bool) -> Select:
+        statement = self.__build_base_orders_select(user_column, user_id)
 
         if not include_deleted:
             statement = statement.where(Order.is_deleted == false())
 
-        return await self._get_all(statement)
+        return statement
 
-    async def __get_order(self, user_column: InstrumentedAttribute, user_id: int, order_id: int) -> Optional[Order]:
+    def __build_order_select(self, user_column: InstrumentedAttribute, user_id: int, order_id: int) -> Select:
         statement = (
-            select(Order)
-            .where(operators.eq(user_column, user_id))
+            self.__build_base_orders_select(user_column, user_id)
             .where(Order.id == order_id)
             .where(Order.is_deleted == false())
         )
 
-        return await self._get_one(statement)
+        return statement
 
     async def get_customer_orders(self, customer_id: int, include_deleted: bool) -> Sequence[Order]:
-        return await self.__get_orders(Order.customer_id, customer_id, include_deleted)
+        return await self._get_all(self.__build_orders_select(Order.customer_id, customer_id, include_deleted))
 
     async def get_executor_orders(self, executor_id: int, include_deleted: bool) -> Sequence[Order]:
-        return await self.__get_orders(Order.executor_id, executor_id, include_deleted)
+        return await self._get_all(self.__build_orders_select(Order.executor_id, executor_id, include_deleted))
 
     async def get_customer_order(self, customer_id: int, order_id: int) -> Optional[Order]:
-        return await self.__get_order(Order.customer_id, customer_id, order_id)
+        return await self._get_one(self.__build_order_select(Order.customer_id, customer_id, order_id))
 
     async def get_executor_order(self, executor_id: int, order_id: int) -> Optional[Order]:
-        return await self.__get_order(Order.executor_id, executor_id, order_id)
-
-    async def update_base(self, order_id: int, name: str, description: str):
-        await self.execute(self.__build_order_update(order_id).values(name=name, description=description))
-
-    async def change_executor(self, order_id: int, executor_id: int):
-        await self.execute(self.__build_order_update(order_id).values(executor_id=executor_id))
-
-    async def change_status(self, order_id: int, status_id: int):
-        await self.execute(self.__build_order_update(order_id).values(status_id=status_id))
-
-    async def mark_deleted(self, order_id: int):
-        await self.execute(self.__build_order_update(order_id).values(is_deleted=True))
+        return await self._get_one(self.__build_order_select(Order.executor_id, executor_id, order_id))

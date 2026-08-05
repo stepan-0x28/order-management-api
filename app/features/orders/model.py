@@ -8,7 +8,6 @@ from app.features.statuses.model import Status
 
 
 class Order(BaseModel):
-    # noinspection SpellCheckingInspection
     __tablename__ = 'orders'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)

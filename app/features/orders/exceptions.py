@@ -9,3 +9,8 @@ class NonExistentOrderError(BaseError):
 class SameStatusError(BaseError):
     status_code = 400
     detail = 'Current status and new status are the same'
+
+
+class SameExecutorError(BaseError):
+    status_code = 400
+    detail = 'Current executor and new executor are the same'

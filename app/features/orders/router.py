@@ -36,7 +36,7 @@ async def update_order(current_customer: Annotated[User, Depends(get_current_cus
                        order_id: int,
                        order_service: Annotated[OrderService, Depends(get_order_service)],
                        order_base: Annotated[OrderBase, Depends(FormMaker(OrderBase))]):
-    await order_service.update_base(current_customer, order_id, order_base)
+    await order_service.update_base_data(current_customer, order_id, order_base)
 
 
 @router.post('/{order_id}/status')
