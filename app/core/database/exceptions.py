@@ -1,5 +1,5 @@
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy import inspect
+from sqlalchemy import inspect, Column
 
 from app.features.roles.model import Role
 from app.features.users.model import User
@@ -15,7 +15,7 @@ _MODELS = {
 
 
 class UniqueViolationError(Exception):
-    def __init__(self, column):
+    def __init__(self, column: Column):
         self.column = column
 
 
