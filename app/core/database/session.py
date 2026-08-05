@@ -6,7 +6,7 @@ from app.core.base.model import BaseModel
 from app.core.database.exceptions import convert_integrity_error
 
 
-class SessionWrapper:
+class DBSessionWrapper:
     def __init__(self, db_session: AsyncSession):
         self.__db_session = db_session
 

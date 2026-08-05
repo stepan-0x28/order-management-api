@@ -1,5 +1,5 @@
 from app.core.database.exceptions import UniqueViolationError
-from app.core.database.session import SessionWrapper
+from app.core.database.session import DBSessionWrapper
 
 from app.security.passwords import hash_password, check_password
 from app.security.auth.exceptions import IncorrectPasswordError
@@ -13,7 +13,7 @@ from app.features.roles.repository import RoleRepository
 
 
 class UserService:
-    def __init__(self, user_repository: UserRepository, role_repository: RoleRepository, db_session: SessionWrapper):
+    def __init__(self, user_repository: UserRepository, role_repository: RoleRepository, db_session: DBSessionWrapper):
         self.__user_repository = user_repository
         self.__role_repository = role_repository
 

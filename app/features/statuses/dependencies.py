@@ -2,13 +2,13 @@ from fastapi import Depends
 from typing import Annotated
 
 from app.core.dependencies import get_db_session
-from app.core.database.session import SessionWrapper
+from app.core.database.session import DBSessionWrapper
 
 from app.features.statuses.repository import StatusRepository
 from app.features.statuses.service import StatusService
 
 
-def get_status_repository(db_session: Annotated[SessionWrapper, Depends(get_db_session)]) -> StatusRepository:
+def get_status_repository(db_session: Annotated[DBSessionWrapper, Depends(get_db_session)]) -> StatusRepository:
     return StatusRepository(db_session)
 
 

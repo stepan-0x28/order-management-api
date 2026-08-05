@@ -1,11 +1,11 @@
 from sqlalchemy import Select
 from typing import Sequence, Any
 
-from app.core.database.session import SessionWrapper
+from app.core.database.session import DBSessionWrapper
 
 
 class BaseRepository:
-    def __init__(self, db_session: SessionWrapper):
+    def __init__(self, db_session: DBSessionWrapper):
         self.__db_session = db_session
 
     async def _get_all(self, statement: Select) -> Sequence:

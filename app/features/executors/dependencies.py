@@ -2,13 +2,13 @@ from fastapi import Depends
 from typing import Annotated
 
 from app.core.dependencies import get_db_session
-from app.core.database.session import SessionWrapper
+from app.core.database.session import DBSessionWrapper
 
 from app.features.executors.repository import ExecutorRepository
 from app.features.executors.service import ExecutorService
 
 
-def get_executor_repository(db_session: Annotated[SessionWrapper, Depends(get_db_session)]) -> ExecutorRepository:
+def get_executor_repository(db_session: Annotated[DBSessionWrapper, Depends(get_db_session)]) -> ExecutorRepository:
     return ExecutorRepository(db_session)
 
 

@@ -4,12 +4,12 @@ from pydantic import BaseModel
 from inspect import Signature, Parameter
 
 from app.core.database.connection import async_session_maker
-from app.core.database.session import SessionWrapper
+from app.core.database.session import DBSessionWrapper
 
 
-async def get_db_session() -> AsyncGenerator[SessionWrapper, None]:
+async def get_db_session() -> AsyncGenerator[DBSessionWrapper, None]:
     async with async_session_maker() as db_session:
-        yield SessionWrapper(db_session)
+        yield DBSessionWrapper(db_session)
 
 
 class FormMaker:

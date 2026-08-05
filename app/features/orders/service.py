@@ -1,6 +1,6 @@
 from typing import Sequence
 
-from app.core.database.session import SessionWrapper
+from app.core.database.session import DBSessionWrapper
 
 from app.features.orders.exceptions import NonExistentOrderError, SameStatusError, SameExecutorError
 from app.features.orders.repository import OrderRepository
@@ -20,7 +20,7 @@ class OrderService:
                  order_repository: OrderRepository,
                  status_repository: StatusRepository,
                  executor_repository: ExecutorRepository,
-                 db_session: SessionWrapper):
+                 db_session: DBSessionWrapper):
         self.__order_repository = order_repository
         self.__status_repository = status_repository
         self.__executor_repository = executor_repository
