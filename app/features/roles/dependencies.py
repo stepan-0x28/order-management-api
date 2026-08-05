@@ -8,8 +8,8 @@ from app.features.roles.repository import RoleRepository
 from app.features.roles.service import RoleService
 
 
-def get_role_repository(session: Annotated[SessionWrapper, Depends(get_db_session)]) -> RoleRepository:
-    return RoleRepository(session)
+def get_role_repository(db_session: Annotated[SessionWrapper, Depends(get_db_session)]) -> RoleRepository:
+    return RoleRepository(db_session)
 
 
 def get_role_service(role_repository: Annotated[RoleRepository, Depends(get_role_repository)]) -> RoleService:

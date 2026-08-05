@@ -13,11 +13,11 @@ from app.features.roles.repository import RoleRepository
 
 
 class UserService:
-    def __init__(self, user_repository: UserRepository, role_repository: RoleRepository, session: SessionWrapper):
+    def __init__(self, user_repository: UserRepository, role_repository: RoleRepository, db_session: SessionWrapper):
         self.__user_repository = user_repository
         self.__role_repository = role_repository
 
-        self.__session = session
+        self.__db_session = db_session
 
     async def create(self, user_in: UserIn) -> int:
         if await self.__role_repository.get_by_id(user_in.role_id) is None:
@@ -34,10 +34,10 @@ class UserService:
             last_name=user_in.last_name
         )
 
-        self.__session.add(user)
+        self.__db_session.add(user)
 
         try:
-            await self.__session.commit()
+            await self.__db_session.commit()
         except UniqueViolationError as err:
             if err.column == User.username:
                 raise TakenUsernameError
@@ -48,7 +48,7 @@ class UserService:
         user.first_name = user_personal.first_name
         user.last_name = user_personal.last_name
 
-        await self.__session.commit()
+        await self.__db_session.commit()
 
     async def change_username(self, user: User, username: str):
         if username == user.username:
@@ -60,7 +60,7 @@ class UserService:
         user.username = username
 
         try:
-            await self.__session.commit()
+            await self.__db_session.commit()
         except UniqueViolationError as err:
             if err.column == User.username:
                 raise TakenUsernameError
@@ -75,4 +75,4 @@ class UserService:
         user.password_hash = await hash_password(new_password)
         user.token_version += 1
 
-        await self.__session.commit()
+        await self.__db_session.commit()

@@ -8,8 +8,8 @@ from app.features.statuses.repository import StatusRepository
 from app.features.statuses.service import StatusService
 
 
-def get_status_repository(session: Annotated[SessionWrapper, Depends(get_db_session)]) -> StatusRepository:
-    return StatusRepository(session)
+def get_status_repository(db_session: Annotated[SessionWrapper, Depends(get_db_session)]) -> StatusRepository:
+    return StatusRepository(db_session)
 
 
 def get_status_service(status_repository: Annotated[StatusRepository, Depends(get_status_repository)]) -> StatusService:

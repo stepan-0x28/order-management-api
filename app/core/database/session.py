@@ -7,17 +7,17 @@ from app.core.database.exceptions import convert_integrity_error
 
 
 class SessionWrapper:
-    def __init__(self, session: AsyncSession):
-        self.__session = session
+    def __init__(self, db_session: AsyncSession):
+        self.__db_session = db_session
 
     async def commit(self):
         try:
-            await self.__session.commit()
+            await self.__db_session.commit()
         except IntegrityError as err:
-            raise convert_integrity_error(self.__session.get_bind().dialect.name, err)
+            raise convert_integrity_error(self.__db_session.get_bind().dialect.name, err)
 
     async def execute(self, statement: Executable) -> Result:
-        return await self.__session.execute(statement)
+        return await self.__db_session.execute(statement)
 
     def add(self, model: BaseModel):
-        self.__session.add(model)
+        self.__db_session.add(model)

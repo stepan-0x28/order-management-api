@@ -20,12 +20,12 @@ class OrderService:
                  order_repository: OrderRepository,
                  status_repository: StatusRepository,
                  executor_repository: ExecutorRepository,
-                 session: SessionWrapper):
+                 db_session: SessionWrapper):
         self.__order_repository = order_repository
         self.__status_repository = status_repository
         self.__executor_repository = executor_repository
 
-        self.__session = session
+        self.__db_session = db_session
 
     async def create(self, customer: User, order_in: OrderIn) -> int:
         if await self.__executor_repository.get_by_id(order_in.executor_id) is None:
@@ -41,9 +41,9 @@ class OrderService:
             executor_id=order_in.executor_id
         )
 
-        self.__session.add(order)
+        self.__db_session.add(order)
 
-        await self.__session.commit()
+        await self.__db_session.commit()
 
         return order.id
 
@@ -62,7 +62,7 @@ class OrderService:
         order.name = order_base.name
         order.description = order_base.description
 
-        await self.__session.commit()
+        await self.__db_session.commit()
 
     async def change_executor(self, customer: User, order_id: int, executor_id: int):
         order = await self.__order_repository.get_customer_order(customer.id, order_id)
@@ -78,7 +78,7 @@ class OrderService:
 
         order.executor_id = executor_id
 
-        await self.__session.commit()
+        await self.__db_session.commit()
 
     async def change_status(self, user: User, order_id: int, status_id: int):
         if await user.is_role(Role.EXECUTOR):
@@ -97,7 +97,7 @@ class OrderService:
 
         order.status_id = status_id
 
-        await self.__session.commit()
+        await self.__db_session.commit()
 
     async def mark_deleted(self, customer: User, order_id: int):
         order = await self.__order_repository.get_customer_order(customer.id, order_id)
@@ -107,4 +107,4 @@ class OrderService:
 
         order.is_deleted = True
 
-        await self.__session.commit()
+        await self.__db_session.commit()

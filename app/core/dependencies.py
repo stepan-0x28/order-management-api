@@ -8,8 +8,8 @@ from app.core.database.session import SessionWrapper
 
 
 async def get_db_session() -> AsyncGenerator[SessionWrapper, None]:
-    async with async_session_maker() as session:
-        yield SessionWrapper(session)
+    async with async_session_maker() as db_session:
+        yield SessionWrapper(db_session)
 
 
 class FormMaker:

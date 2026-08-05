@@ -10,11 +10,11 @@ from app.features.roles.repository import RoleRepository
 from app.features.roles.dependencies import get_role_repository
 
 
-def get_user_repository(session: Annotated[SessionWrapper, Depends(get_db_session)]) -> UserRepository:
-    return UserRepository(session)
+def get_user_repository(db_session: Annotated[SessionWrapper, Depends(get_db_session)]) -> UserRepository:
+    return UserRepository(db_session)
 
 
 def get_user_service(user_repository: Annotated[UserRepository, Depends(get_user_repository)],
                      role_repository: Annotated[RoleRepository, Depends(get_role_repository)],
-                     session: Annotated[SessionWrapper, Depends(get_db_session)]) -> UserService:
-    return UserService(user_repository, role_repository, session)
+                     db_session: Annotated[SessionWrapper, Depends(get_db_session)]) -> UserService:
+    return UserService(user_repository, role_repository, db_session)

@@ -12,12 +12,12 @@ from app.features.executors.repository import ExecutorRepository
 from app.features.executors.dependencies import get_executor_repository
 
 
-def get_order_repository(session: Annotated[SessionWrapper, Depends(get_db_session)]) -> OrderRepository:
-    return OrderRepository(session)
+def get_order_repository(db_session: Annotated[SessionWrapper, Depends(get_db_session)]) -> OrderRepository:
+    return OrderRepository(db_session)
 
 
 def get_order_service(order_repository: Annotated[OrderRepository, Depends(get_order_repository)],
                       status_repository: Annotated[StatusRepository, Depends(get_status_repository)],
                       executor_repository: Annotated[ExecutorRepository, Depends(get_executor_repository)],
-                      session: Annotated[SessionWrapper, Depends(get_db_session)]) -> OrderService:
-    return OrderService(order_repository, status_repository, executor_repository, session)
+                      db_session: Annotated[SessionWrapper, Depends(get_db_session)]) -> OrderService:
+    return OrderService(order_repository, status_repository, executor_repository, db_session)
