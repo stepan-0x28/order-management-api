@@ -1,85 +1,50 @@
 # Order management API
 
-### Demo project on FastAPI
+This simple API is designed for an order management system. It can serve both executors and customers. Customers can
+create orders, view, edit, delete, change status, and change the executor. Executors can view orders and change
+status
 
-- asynchronous
+### Built with
+
+- FastAPI
+- asyncio
 - SQLAlchemy
+- PostgreSQL
 - Pydantic
-- other libraries
+- bcrypt
+- JWT
+- Swagger
 
-### Launch (Docker)
+### Launch
 
-#### Creating a network:
+First you need to create a `.env` file based on `.env.example` with the necessary parameters
 
-```
-docker network create demo-web-api-network
-```
-
-#### Launching the DBMS:
-
-```
-docker pull postgres
+```bash
+cp .env.example .env
 ```
 
-```
-docker run -d \
---restart=always \
--p 5432:5432 \
---name demo-web-api-dbms \
---network demo-web-api-network \
--e POSTGRES_PASSWORD=password \
--e POSTGRES_USER=user \
--e POSTGRES_DB=db \
--e PGDATA=/var/lib/postgresql/data/pgdata \
--v /var/lib/demowebapi/data:/var/lib/postgresql/data \
--v $(pwd)/initialization.sql:/docker-entrypoint-initdb.d/initialization.sql:ro \
-postgres
+If you need external access to the database, create a `docker-compose.override.yml` file with the following contents:
+
+```yaml
+services:
+  db:
+    ports:
+      - "5432:5432"
 ```
 
-#### Launching the web API:
+Then just run Docker Compose
 
-```
-docker build -t demowebapi .
-```
-
-```
-docker run -d \
---restart=always \
---name demo-web-api \
---network demo-web-api-network \
--e DATABASE_HOST=demo-web-api-dbms \
--e DATABASE_NAME=db \
--e DATABASE_PASSWORD=password \
--e DATABASE_USERNAME=user \
--e ENCRYPTION_KEY=116dbf4ce038d9e961cf1bfb03aa6f007389b4760fe2b1deb94a806af2b29ad0 \
--e UVICORN_ROOT_PATH=/Demo-web-API-on-FastAPI-with-Swagger \
-demowebapi
+```bash
+docker compose up -d
 ```
 
-#### Launching the web server:
-
-```
-docker pull nginx
-```
-
-```
-docker run -d \
---restart=always \
--p 443:443 \
---name demo-web-api-web-server \
---network demo-web-api-network \
--v $(pwd)/demowebapi.conf:/etc/nginx/conf.d/demowebapi.conf:ro \
--v /etc/letsencrypt/live/stepan-0x28.com/fullchain.pem:/etc/letsencrypt/live/stepan-0x28.com/fullchain.pem:ro \
--v /etc/letsencrypt/live/stepan-0x28.com/privkey.pem:/etc/letsencrypt/live/stepan-0x28.com/privkey.pem:ro \
-nginx
-```
+Now you can open http://127.0.0.1:8000/docs in your browser (if necessary, replace `8000` with the port you configured)
 
 ### Demonstration
 
-You can go to the [documentation page](https://order-management-api.stepan-0x28.com/docs) to test the
-methods
+You can test the API using the [interactive documentation](https://order-management-api.stepan-0x28.com/docs)
 
-Test users for authorization:
+Test accounts:
 
 | Username   | Password       | Role     |
 |------------|----------------|----------|
