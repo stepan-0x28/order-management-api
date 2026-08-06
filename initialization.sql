@@ -50,8 +50,8 @@ VALUES ('customer', 'Customer', 'Creates orders'),
 
 INSERT INTO statuses (key, name, description)
 VALUES ('new', 'New', 'The customer created an order'),
-       ('in_progress', 'In progress', 'The customer began work on the order'),
-       ('completed', 'Completed', 'The customer has completed work on the order');
+       ('in_progress', 'In progress', 'The executor began work on the order'),
+       ('completed', 'Completed', 'The executor has completed work on the order');
 
 INSERT INTO users (username, password_hash, role_id, first_name, last_name)
 VALUES ('kevin645', '$2b$12$oe.QScdZT.gl7FRBlN.dFuKX/5CcphY/8H9iFozmyOuxw9v34aBym', 2, 'Kevin', 'Morgan'),
