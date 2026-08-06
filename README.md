@@ -1,6 +1,6 @@
 # Order management API
 
-This simple API is designed for an order management system. It can serve both executors and customers. Customers can
+This is a simple API for order management. It can serve both executors and customers. Customers can
 create orders, view, edit, delete, change status, and change the executor. Executors can view orders and change
 status
 
