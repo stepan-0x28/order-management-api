@@ -20,7 +20,7 @@ def exception_handler(_, exc: BaseError) -> JSONResponse:
 
 
 def main():
-    app = FastAPI(title='Order management API', summary='This simple API is designed for an order management system')
+    app = FastAPI(title='Order management API', summary='This is a simple API for order management')
 
     for router in [auth, executors, statuses, roles, orders, users]:
         for route in router.routes:
